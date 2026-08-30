@@ -7,11 +7,12 @@ Las características principales, incluyendo las que se tienen planeadas a futur
 
 - **Gestión de Depósitos:**
   - Crear, editar y eliminar depósitos de agua.
-  - Escaneo de código QR para vincular dispositivos IoT.
-  - Configurar las dimensiones del depósito (capacidad, altura, espacio libre) y umbrales personalizador por sensor (nivel, pH y turbidez).
+  - Descubrimiento automático de kits IoT en la red local mediante mDNS (Multicast DNS).
+  - Configurar las dimensiones del depósito (capacidad, altura, espacio libre) y umbrales personalizados por sensor (nivel, pH y turbidez).
 - **Monitoreo en Tiempo Real:**
   - Visualizar parámetros actuales de agua (Nivel, Turbidez, pH) mediante Socket.IO.
   - Historial de lecturas con filtrado por periodo (diario, semanal, mensual).
+  - Componente visual interactivo de nivel tipo depósito con silueta y animación de oleaje senoidal.
 - **Sistema de Alertas:**
   - Notificaciones al detectar parámetros fuera de los rangos seguros definidos.
   - Notificaciones push mediante Firebase Cloud Messaging.
@@ -26,7 +27,7 @@ Las características principales, incluyendo las que se tienen planeadas a futur
   - Perfil de usuario con edición de datos.
 - **Visualización de Datos:**
   - Gráficos interactivos con `fl_chart` para visualizar la evolución de la calidad del agua.
-  - Indicadores circulares de progreso por parámetro.
+  - Indicadores de progreso y nivel de depósito estilizados.
   - Detalles por parámetro y registros históricos.
 - **Reportes en PDF:**
   - Generación, previsualización y exportación de reportes de estado detallados.
@@ -37,7 +38,7 @@ Las características principales, incluyendo las que se tienen planeadas a futur
   - Selector de tema (sistema, claro, oscuro) e idioma directamente en el perfil.
 - **Monitoreo de Conectividad:**
   - Detección automática de pérdida y restauración de internet.
-  - SnackBar persistente flotante al perder la conexión.
+  - SnackBar flotante al perder la conexión.
   - Recarga automática de depósitos al restaurar la conexión.
 - **Soporte y Ayuda:**
   - Sección de preguntas frecuentes (FAQ), manual de usuario y contacto de soporte.
@@ -50,18 +51,18 @@ Las características principales, incluyendo las que se tienen planeadas a futur
 | Gestión de Estado      | Provider                                                |
 | Persistencia Local     | Shared Preferences, flutter_secure_storage              |
 | Conectividad           | Socket.IO Client, HTTP, internet_connection_checker_plus |
-| Notificaciones Push    | Firebase Cloud Messaging                                |
+| Notificaciones Push    | Firebase Cloud Messaging, flutter_local_notifications   |
 | Visualización de Datos | fl_chart, PDF, Printing, Screenshot                     |
 | Internacionalización   | intl, flutter_localizations                             |
-| Escaneo QR             | Mobile Scanner                                          |
+| Descubrimiento de Red  | multicast_dns (mDNS / Zeroconf)                         |
 | Permisos               | Permission Handler                                      |
 | Utilidades             | URL Launcher, Package Info Plus                         |
 | Diseño Visual          | Animate Do, Flutter Launcher Icons & Native Splash      |
 
 ## Prerrequisitos
 
-- Flutter SDK (versión 3.8.1 o superior, según `pubspec.yaml`)
-- Dart SDK
+- Flutter SDK (versión 3.38.7 o superior en canal `stable`)
+- Dart SDK (versión 3.10.7 o superior, compatible con Dart SDK `^3.8.1` según `pubspec.yaml`)
 - Un servidor backend en ejecución con los endpoints de la API definidos en `lib/core/network/global_variable.dart`.
 
 ## Cómo Empezar
@@ -121,6 +122,7 @@ lib/
 │   │   ├── app_router.dart                 # Definición de rutas de la aplicación
 │   │   └── imports.dart                    # Barrel de importaciones
 │   ├── services/                    # Servicios nativos de plataforma
+│   │   ├── network_discovery_service.dart  # Descubrimiento de kits mDNS en red local
 │   │   └── notification_service.dart       # Servicio de notificaciones push FCM y locales
 │   ├── storage/                     # Persistencia local (sesión, token, idioma, tema)
 │   │   ├── language_storage.dart           # Persistencia y Provider de idioma
@@ -150,6 +152,7 @@ lib/
 │       ├── filter_chip_format.dart         # Chips de filtro
 │       ├── icon_format.dart                # Íconos estilizados
 │       ├── linea_chart.dart                # Gráfico de líneas (fl_chart)
+│       ├── list_view_format.dart           # ListView envolvente estilizado
 │       ├── menu_button_format.dart         # Botones de menú
 │       ├── scaffold_main.dart              # Scaffold principal con navegación
 │       ├── snack_bar_format.dart           # Snackbars estilizados
@@ -158,20 +161,6 @@ lib/
 │       ├── text_field_format.dart          # Campos de texto estilizados
 │       └── text_format.dart                # Textos estilizados
 ├── features/                # Módulos de funcionalidades independientes
-│   ├── alert/               # Sistema de alertas (Faltante)
-│   │   ├── data/
-│   │   │   ├── models/
-│   │   │   ├── repositories/
-│   │   │   └── sources/
-│   │   ├── domain/
-│   │   │   ├── entities/
-│   │   │   ├── repositories/
-│   │   │   └── usecases/
-│   │   └── presentation/
-│   │       ├── providers/
-│   │       ├── screens/
-│   │       │   └── alerts_screen.dart
-│   │       └── widgets/
 │   ├── auth/                # Autenticación (login, registro, restablecimiento, perfil)
 │   │   ├── data/
 │   │   │   ├── models/
@@ -231,10 +220,37 @@ lib/
 │   │       │   └── deposit_provider.dart
 │   │       ├── screens/
 │   │       │   ├── deposit_screen.dart             # Pantalla unificada de creación y edición
-│   │       │   └── scanner_screen.dart
+│   │       │   └── nearby_devices_screen.dart      # Descubrimiento y vinculación de kits locales
 │   │       └── widgets/
 │   │           ├── slider_format.dart              # Selector deslizable de valores
 │   │           └── value_dialog.dart               # Diálogo de selección numérica de valor
+│   ├── notification/        # Sistema de notificaciones push e historial de alertas
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   └── notification_model.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── notification_repository_impl.dart
+│   │   │   └── sources/
+│   │   │       └── notification_remote_data_source.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── notification.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── notification_repository_interface.dart
+│   │   │   └── usecases/
+│   │   │       ├── delete_all_notifications_usecase.dart
+│   │   │       ├── delete_notification_usecase.dart
+│   │   │       ├── get_notifications_usecase.dart
+│   │   │       ├── mark_notifications_as_read_usecase.dart
+│   │   │       ├── register_fcm_token_usecase.dart
+│   │   │       └── unregister_fcm_token_usecase.dart
+│   │   └── presentation/
+│   │       ├── providers/
+│   │       │   └── notification_provider.dart
+│   │       ├── screens/
+│   │       │   └── notification_screen.dart        # Centro de notificaciones y alertas
+│   │       └── widgets/
+│   │           └── formater_time.dart              # Formateo relativo de tiempo
 │   ├── reading/             # Lecturas de sensores y dashboard de monitoreo
 │   │   ├── data/
 │   │   │   ├── models/
@@ -265,6 +281,7 @@ lib/
 │   │       └── widgets/
 │   │           ├── circular_progress_parameters.dart
 │   │           ├── deposit_card.dart               # Tarjeta de depósito con datos en tiempo real
+│   │           ├── deposit_level.dart              # Nivel gráfico tipo depósito con ola animada
 │   │           ├── dialog_export_csv.dart          # Diálogo de exportación CSV
 │   │           └── state_parameters.dart           # Indicador visual de estado de parámetros
 │   ├── support/             # Ayuda, soporte y contacto
@@ -286,37 +303,60 @@ lib/
 │   │       ├── screens/
 │   │       │   ├── about_screen.dart
 │   │       │   ├── contact_screen.dart
+│   │       │   ├── privacy_policy_screen.dart      # Pantalla de políticas de privacidad
 │   │       │   ├── support_screen.dart
 │   │       │   └── user_manual.dart
 │   │       └── widgets/
 │   │           └── faq_item.dart
-│   └── team/                # Gestión de equipos e invitaciones
+│   ├── team/                # Gestión de equipos e invitaciones
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   └── team_model.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── team_repository_impl.dart
+│   │   │   └── sources/
+│   │   │       └── team_data_source.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── team.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── team_repository_interface.dart
+│   │   │   └── usecases/
+│   │   │       ├── accept_invitation_usecase.dart
+│   │   │       ├── delete_member_usecase.dart
+│   │   │       ├── get_invitations_usecase.dart
+│   │   │       ├── get_members_usecase.dart
+│   │   │       ├── invite_member_usecase.dart
+│   │   │       ├── reject_invitation_usecase.dart
+│   │   │       └── update_member_usecase.dart
+│   │   └── presentation/
+│   │       ├── providers/
+│   │       │   └── team_provider.dart
+│   │       ├── screens/
+│   │       │   └── members_screen.dart
+│   │       └── widgets/
+│   └── tech/                # Módulo de administración técnica y métricas de sistema
 │       ├── data/
-│       │   ├── models/
-│       │   │   └── team_model.dart
 │       │   ├── repositories/
-│       │   │   └── team_repository_impl.dart
+│       │   │   └── tech_repository_impl.dart
 │       │   └── sources/
-│       │       └── team_data_source.dart
+│       │       └── tech_data_source.dart
 │       ├── domain/
 │       │   ├── entities/
-│       │   │   └── team.dart
+│       │   │   ├── tech_stats.dart
+│       │   │   └── tech_user.dart
 │       │   ├── repositories/
-│       │   │   └── team_repository_interface.dart
+│       │   │   └── tech_repository_interface.dart
 │       │   └── usecases/
-│       │       ├── accept_invitation_usecase.dart
-│       │       ├── delete_member_usecase.dart
-│       │       ├── get_invitations_usecase.dart
-│       │       ├── get_members_usecase.dart
-│       │       ├── invite_member_usecase.dart
-│       │       ├── reject_invitation_usecase.dart
-│       │       └── update_member_usecase.dart
+│       │       ├── get_all_users_tech_usecase.dart
+│       │       └── get_system_stats_usecase.dart
 │       └── presentation/
 │           ├── providers/
-│           │   └── team_provider.dart
-│           ├── screens/
-│           │   └── members_screen.dart
-│           └── widgets/
+│           │   └── tech_provider.dart
+│           └── screens/
+│               ├── tech_dashboard_screen.dart      # Panel de administración técnica
+│               └── tech_users_screen.dart          # Gestión de usuarios del sistema
+├── firebase_options.dart    # Configuración de Firebase para plataformas nativas
 ├── l10n/                    # Archivos de internacionalización
 │   ├── app_en.arb                   # Cadenas de texto en inglés
 │   ├── app_es.arb                   # Cadenas de texto en español
