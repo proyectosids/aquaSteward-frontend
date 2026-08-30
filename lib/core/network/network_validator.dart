@@ -79,7 +79,6 @@ class _NetworkValidatorState extends State<NetworkValidator> {
   void _snackbarNoConnection() => SnackBarFormat(
     context: context,
     message: context.l10n.red_sin_conexion,
-    duration: 365,
     isError: true,
   ).show();
 
