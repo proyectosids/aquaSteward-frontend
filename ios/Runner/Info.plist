@@ -47,7 +47,11 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-		<key>NSCameraUsageDescription</key>
-		<string>AquaSteward necesita acceso a tu cámara para poder agregar imágenes de tus depósitos.</string>
+		<key>NSLocalNetworkUsageDescription</key>
+		<string>AquaSteward necesita acceso a tu red local para descubrir y vincular tus kits de depósitos cercanos.</string>
+		<key>NSBonjourServices</key>
+		<array>
+			<string>_aquasteward._tcp</string>
+		</array>
 	</dict>
 </plist>

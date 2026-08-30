@@ -16,7 +16,6 @@ dependencies:
   fl_chart: ^1.1.1 # Gráficos.
   http: ^1.6.0 # HTTP para hacer peticiones.
   intl: ^0.20.2 # Formato de fechas.
-  mobile_scanner: ^7.2.0 # Escanear QR.
   socket_io_client: ^3.1.4 # Socket para conectar en tiempo real con el socket.
   shared_preferences: ^2.5.4 # Persistencia de preferencias del usuario.
   screenshot: ^3.0.0 # Captura de pantalla para colocar el gráfico en el PDF.
@@ -34,6 +33,8 @@ dependencies:
   google_fonts: ^8.2.0
   internet_connection_checker_plus: ^3.1.1 # Verificar si realmente hay internet.
   connectivity_plus: ^7.3.1
+  fluid_progress_indicator: ^1.0.1
+  multicast_dns: ^0.3.3+1
 
 
 dev_dependencies:
