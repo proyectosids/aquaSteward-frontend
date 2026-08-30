@@ -146,7 +146,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titulo_reporte_pdf => 'AquaSteward Report';
 
   @override
-  String get titulo_qr => 'Scan QR Code';
+  String get titulo_dispositivos_cercanos => 'Nearby Devices';
+
+  @override
+  String get dispositivos_buscando =>
+      'Searching for devices on your network...';
+
+  @override
+  String get dispositivos_no_encontrados => 'No kits found on this network';
+
+  @override
+  String get dispositivos_reintentar => 'Search again';
+
+  @override
+  String get dispositivos_ayuda_red =>
+      'Make sure your phone and the deposit are connected to the same Wi-Fi network.';
+
+  @override
+  String get dispositivos_conectar => 'Select';
 
   @override
   String get auth_iniciar_sesion => 'Sign In';

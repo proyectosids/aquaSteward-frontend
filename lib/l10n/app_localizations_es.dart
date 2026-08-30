@@ -148,7 +148,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get titulo_reporte_pdf => 'Reporte de AquaSteward';
 
   @override
-  String get titulo_qr => 'Escanear Código QR';
+  String get titulo_dispositivos_cercanos => 'Dispositivos Cercanos';
+
+  @override
+  String get dispositivos_buscando => 'Buscando dispositivos en tu red...';
+
+  @override
+  String get dispositivos_no_encontrados =>
+      'No se encontraron kits en esta red';
+
+  @override
+  String get dispositivos_reintentar => 'Volver a buscar';
+
+  @override
+  String get dispositivos_ayuda_red =>
+      'Asegúrate de que tu teléfono y el depósito estén conectados a la misma red Wi-Fi.';
+
+  @override
+  String get dispositivos_conectar => 'Seleccionar';
 
   @override
   String get auth_iniciar_sesion => 'Iniciar sesión';

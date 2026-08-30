@@ -356,11 +356,41 @@ abstract class AppLocalizations {
   /// **'Reporte de AquaSteward'**
   String get titulo_reporte_pdf;
 
-  /// No description provided for @titulo_qr.
+  /// No description provided for @titulo_dispositivos_cercanos.
   ///
   /// In es, this message translates to:
-  /// **'Escanear Código QR'**
-  String get titulo_qr;
+  /// **'Dispositivos Cercanos'**
+  String get titulo_dispositivos_cercanos;
+
+  /// No description provided for @dispositivos_buscando.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando dispositivos en tu red...'**
+  String get dispositivos_buscando;
+
+  /// No description provided for @dispositivos_no_encontrados.
+  ///
+  /// In es, this message translates to:
+  /// **'No se encontraron kits en esta red'**
+  String get dispositivos_no_encontrados;
+
+  /// No description provided for @dispositivos_reintentar.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a buscar'**
+  String get dispositivos_reintentar;
+
+  /// No description provided for @dispositivos_ayuda_red.
+  ///
+  /// In es, this message translates to:
+  /// **'Asegúrate de que tu teléfono y el depósito estén conectados a la misma red Wi-Fi.'**
+  String get dispositivos_ayuda_red;
+
+  /// No description provided for @dispositivos_conectar.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar'**
+  String get dispositivos_conectar;
 
   /// No description provided for @auth_iniciar_sesion.
   ///
