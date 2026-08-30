@@ -93,8 +93,12 @@ class AppIcon {
 
   // Iconos de en la sección agregar depósito
   static const Icon wifi = Icon(Icons.wifi);
+  static Icon wifiOff({double? size}) =>
+      Icon(Icons.wifi_off_rounded, size: size ?? 20);
+  static Icon wifiFind({double? size}) =>
+      Icon(Icons.wifi_find_rounded, size: size ?? 20);
+  static const Icon sensors = Icon(Icons.sensors_rounded);
   static const Icon waterDamageOutlined = Icon(Icons.water_damage_outlined);
-  static const Icon qrCodeScanner = Icon(Icons.qr_code_scanner);
   static const Icon localDrinkOutlined = Icon(Icons.local_drink_outlined);
   static const Icon heightOutlined = Icon(Icons.height_outlined);
   static const Icon straightenOutlined = Icon(Icons.straighten_outlined);

@@ -5,7 +5,6 @@ import 'package:aqua_steward/core/theme/app_icon.dart';
 import 'package:aqua_steward/core/theme/app_padding.dart';
 import 'package:aqua_steward/core/theme/app_sizedbox.dart';
 import 'package:aqua_steward/core/utils/app_validators.dart';
-import 'package:aqua_steward/core/utils/permission_service.dart';
 import 'package:aqua_steward/core/widgets/button_format.dart';
 import 'package:aqua_steward/core/widgets/container_formart.dart';
 import 'package:aqua_steward/core/widgets/container_list_tile.dart';
@@ -245,25 +244,19 @@ class _DepositScreenState extends State<DepositScreen> {
                     validator: (val) => AppValidators.validateIP(context, val),
                     suffixIcon: ButtonFormat(
                       type: "icon",
-                      icon: AppIcon.qrCodeScanner,
+                      icon: AppIcon.wifiFind(),
                       onConfirm: () async {
-                        bool hasPermission =
-                            await PermissionService.requestCameraPermission(
-                              context,
-                            );
-                        if (hasPermission && context.mounted) {
-                          final result = await Navigator.pushNamed(
-                            context,
-                            AppRouter.scanner,
-                          );
+                        final result = await Navigator.pushNamed(
+                          context,
+                          AppRouter.nearbyDevices,
+                        );
 
-                          if (result != null &&
-                              result is String &&
-                              context.mounted) {
-                            setState(() {
-                              _ipController.text = result;
-                            });
-                          }
+                        if (result != null &&
+                            result is String &&
+                            context.mounted) {
+                          setState(() {
+                            _ipController.text = result;
+                          });
                         }
                       },
                     ),
@@ -493,6 +486,7 @@ class _DepositScreenState extends State<DepositScreen> {
           formKey: _formKey,
           label: context.l10n.comun_confirmar,
           onConfirm: _saveDeposit,
+          isLoading: context.watch<DepositProvider>().isLoading,
         ),
       ],
     );

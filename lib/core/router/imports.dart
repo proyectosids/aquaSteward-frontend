@@ -8,7 +8,7 @@ export "package:aqua_steward/features/auth/presentation/screens/signin_screen.da
 export "package:aqua_steward/features/auth/presentation/screens/signup_screen.dart";
 export "package:aqua_steward/features/team/presentation/screens/members_screen.dart";
 export "package:aqua_steward/features/deposit/presentation/screens/deposit_screen.dart";
-export "package:aqua_steward/features/deposit/presentation/screens/scanner_screen.dart";
+export "package:aqua_steward/features/deposit/presentation/screens/nearby_devices_screen.dart";
 export "package:aqua_steward/features/reading/presentation/screens/reports_screen.dart";
 export "package:aqua_steward/features/reading/presentation/screens/pdf_screen.dart";
 export "package:aqua_steward/features/support/presentation/screens/about_screen.dart";

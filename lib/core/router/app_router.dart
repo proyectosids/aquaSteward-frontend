@@ -20,8 +20,7 @@ class AppRouter {
 
   // Depósitos
   static const String depositScreen = "/deposit_screen";
-  static const String settingsThreshold = "/settings_threshold";
-  static const String scanner = "/scanner";
+  static const String nearbyDevices = "/nearby_devices";
 
   // Alertas
   static const String alerts = "/alerts";
@@ -96,7 +95,7 @@ class AppRouter {
         depositData: args?["depositData"] as Map<String, dynamic>?,
       );
     },
-    scanner: (context) => const ScannerScreen(),
+    nearbyDevices: (context) => const NearbyDevicesScreen(),
 
     // Alertas
     alerts: (context) => const NotificationScreen(),

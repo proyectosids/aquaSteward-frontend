@@ -4,35 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
-  // Solicita el permiso de cámara y maneja los estados de rechazo permanente.
-  // Retorna `true` si fue concedido o `false` si fue denegado.
-  static Future<bool> requestCameraPermission(BuildContext context) async {
-    // Verificamos el estado actual
-    PermissionStatus status = await Permission.camera.status;
-
-    if (status.isGranted) {
-      return true;
-    }
-
-    // Si no está concedido, solicitamos el permiso
-    status = await Permission.camera.request();
-
-    if (status.isGranted) {
-      return true;
-    }
-
-    // Si el usuario marcó "No volver a preguntar" (denegado permanentemente)
-    if (status.isPermanentlyDenied) {
-      if (context.mounted) {
-        _showSettingsDialog(
-          context,
-          "Permiso de cámara",
-          "AquaSteward necesita acceder a tu cámara para escanear el QR del depósito.",
-        );
-      }
-    }
-    return false;
-  }
 
   // Solicita el permiso de notificaciones y maneja los estados de rechazo.
   static Future<bool> requestNotificationPermission(
