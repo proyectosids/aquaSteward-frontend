@@ -87,7 +87,7 @@ class CircularProgressParameters extends StatelessWidget {
             ],
           ),
         ),
-        //Texto que muestra el valor actual del parámetro. Puede que el nivel se muestre sin decimales porque son valores grandes.
+        // Texto que muestra el valor actual del parámetro.
         if (unit[index] != "pH")
           TextFormat(
             text: "${imputParameters[index]} ${unit[index]}",
