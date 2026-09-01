@@ -85,20 +85,17 @@ Las características principales, incluyendo las que se tienen planeadas a futur
    ```
 
 4. Configurar Firebase (Cloud Messaging / Notificaciones):
-   Para que las notificaciones push y servicios de Firebase funcionen, debes descargar y colocar los archivos de configuración de tu consola de Firebase:
-   - **Android**:
-     1. Ve a la consola de [Firebase Console](https://console.firebase.google.com/) y entra a tu proyecto.
-     2. En la configuración del proyecto, agrega o selecciona la app Android con el paquete `com.aquasteward.app`.
-     3. Descarga `google-services.json` y colócalo en:
-        ```text
-        android/app/google-services.json
-        ```
-   - **iOS**:
-     1. En la consola de Firebase, agrega o selecciona la app iOS con el Bundle ID correspondiente.
-     2. Descarga `GoogleService-Info.plist` y colócalo en:
-        ```text
-        ios/Runner/GoogleService-Info.plist
-        ```
+   Para que las notificaciones push y servicios de Firebase funcionen, debes enlazar tu proyecto de Firebase:
+   - **Opción recomendada (automática con FlutterFire CLI):**
+     ```bash
+     flutterfire configure
+     ```
+     *(Esto generará automáticamente `lib/firebase_options.dart`, `android/app/google-services.json` y `ios/Runner/GoogleService-Info.plist`).*
+
+   - **Opción manual:**
+     - **Android**: Descarga `google-services.json` desde [Firebase Console](https://console.firebase.google.com/) (paquete `com.aquasteward.app`) y colócalo en `android/app/google-services.json`.
+     - **iOS**: Descarga `GoogleService-Info.plist` y colócalo en `ios/Runner/GoogleService-Info.plist`.
+     - **Dart**: Asegúrate de contar con el archivo de inicialización en `lib/firebase_options.dart`.
 
 5. Configurar ícono y splash screen (Opcional):
    ```bash
