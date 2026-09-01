@@ -12,9 +12,19 @@
 .swiftpm/
 migrate_working_dir/
 
-# Servicios de Google
+# Firebase y Servicios de Google
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
+/lib/firebase_options.dart
+firebase.json
+
+# Entornos y Secretos
+*.env
+*.env.*
+*.keystore
+*.jks
+key.properties
+android/local.properties
 
 # IntelliJ related
 *.iml
