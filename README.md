@@ -84,13 +84,29 @@ Las características principales, incluyendo las que se tienen planeadas a futur
    const String uri = 'http://tu-ip-del-backend:puerto';
    ```
 
-4. Configurar ícono y splash screen (Opcional):
+4. Configurar Firebase (Cloud Messaging / Notificaciones):
+   Para que las notificaciones push y servicios de Firebase funcionen, debes descargar y colocar los archivos de configuración de tu consola de Firebase:
+   - **Android**:
+     1. Ve a la consola de [Firebase Console](https://console.firebase.google.com/) y entra a tu proyecto.
+     2. En la configuración del proyecto, agrega o selecciona la app Android con el paquete `com.aquasteward.app`.
+     3. Descarga `google-services.json` y colócalo en:
+        ```text
+        android/app/google-services.json
+        ```
+   - **iOS**:
+     1. En la consola de Firebase, agrega o selecciona la app iOS con el Bundle ID correspondiente.
+     2. Descarga `GoogleService-Info.plist` y colócalo en:
+        ```text
+        ios/Runner/GoogleService-Info.plist
+        ```
+
+5. Configurar ícono y splash screen (Opcional):
    ```bash
    dart run flutter_launcher_icons
    dart run flutter_native_splash:create
    ```
 
-5. Ejecutar la aplicación:
+6. Ejecutar la aplicación:
    Inicia la aplicación en un emulador o un dispositivo físico conectado:
    ```bash
    flutter run
